@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+$family-sans-serif: 'Rubik', sans-serif;
+
+
+$myBlack: #141204;
+$myGreyOne: #1E1C13;
+$myGreyTwo: #33322D;
+$myOrange: #FF4B00;
+$myWhite: #EEEEEE;
+
+
+// $navbar-height: 4rem;
+$navbar-item-img-max-height:4rem;
+
+$black: $myBlack;
+$primary: $myOrange;
+$white: $myWhite;
+$light:$myGreyTwo;
+$dark:$myGreyOne;
+
+@import "~bulma/bulma.sass";

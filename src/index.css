@@ -11,3 +11,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.rounded{
+  border-radius: 10px;
+}
+
+.map-container{
+  height: calc(100vh - 5rem);
+  overflow: hidden;
+  position: relative;
+}
+
+.map{
+  width: 95%;
+  height: 100%;
+  margin: auto;
+}
+
+.stats-container{
+  overflow: hidden;
+  width: 12rem;
+  box-shadow: 5px 5px 10px grey;
+  background-color: black;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}
+
+#duration{
+  bottom: 1rem;
+  left: 14rem;
+}
