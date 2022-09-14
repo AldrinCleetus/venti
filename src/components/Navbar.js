@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 const NavBar = () => {
     
@@ -9,7 +11,7 @@ const NavBar = () => {
         <nav className="navbar is-black" role="navigation" aria-label="main navigation">
         <div className="navbar-brand ">
             <div className="navbar-item is-size-5">
-                <a href="#"><strong>Venti</strong></a>
+                <a href="#"><strong><Link to="/">Venti</Link></strong></a>
             </div>            
         </div>
         <div className="navbar-end">

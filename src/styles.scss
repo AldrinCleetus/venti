@@ -20,3 +20,8 @@ $light:$myGreyTwo;
 $dark:$myGreyOne;
 
 @import "~bulma/bulma.sass";
+
+
+.input{
+    border: none !important;
+  }

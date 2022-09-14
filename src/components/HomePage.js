@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const HomePage = () => {
     return ( 
         <div className=" my-auto mx-5">
@@ -12,7 +14,7 @@ const HomePage = () => {
             <div class="field ">
               <label class="label has-text-white is-size-3">Choose Your Destination</label>
               <div class="control has-icons-left">
-                <input class="input is-rounded is-large " type="email" placeholder="From"/>
+              <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" />
                 <span class="icon is-medium is-left">
                   <img src="images/button1.svg" alt="" />
                 </span>
@@ -20,7 +22,7 @@ const HomePage = () => {
             </div>
             <div class="field mt-5">
               <div class="control has-icons-left">
-                <input class="input is-rounded is-large " type="email" placeholder="To"/>
+              <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" />
                 <span class="icon is-medium is-left">
                   <img src="images/button2.svg" alt="" />
                 </span>
@@ -29,7 +31,7 @@ const HomePage = () => {
 
             <div class="field is-grouped">
               <div class="control mx-auto">
-                <button class="button is-rounded is-primary is-size-4">Find my Ride</button>
+                <button class="button is-rounded is-primary is-size-4"><Link to="/navigation">Find my Ride</Link></button>
               </div>
   
             </div>

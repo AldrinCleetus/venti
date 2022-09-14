@@ -1,6 +1,6 @@
 const RideType = ({id}) => {
     return ( 
-        <a href="">
+        <a>
             <div className="stats-container has-text-white p-5 rounded" id={id}>
         
         {/* Empty Character for consistent sizing */}
