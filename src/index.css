@@ -13,11 +13,15 @@ code {
 }
 
 .rounded{
-  border-radius: 10px;
+  border-radius: 1rem;
 }
 
 .map-container{
   height: calc(100vh - 5rem);
+  width: 90%;
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fs1.cdn.autoevolution.com%2Fimages%2Fnews%2Fgoogle-maps-data-confirms-the-traffic-trends-everybody-expected-151897_1.jpg&f=1&nofb=1");
+  margin-left: auto;
+  margin-right: auto;
   overflow: hidden;
   position: relative;
 }
@@ -38,7 +42,54 @@ code {
   left: 1rem;
 }
 
+#economy{
+  overflow: visible;
+  bottom: 1rem;
+  left: 94rem;
+}
+
+#premium{
+  overflow: visible;
+  bottom: 1rem;
+  left: 80rem;
+}
+
 #duration{
   bottom: 1rem;
   left: 14rem;
+}
+
+.cab-pic{
+  position: absolute;
+  bottom: 2rem;
+  left: 0px;
+}
+
+.destination-from{
+  width: 25rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+
+
+.destination-to{
+  width: 25rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+::placeholder{
+  color: rgba(255, 255, 255, 0.588) !important;
+}
+
+.pop{
+  transition: all 0.2s ease-in-out;
+}
+
+.pop:hover{
+  transform: translate(0,-10px);
+  transition: all 0.2s ease-in-out;
 }
