@@ -15,6 +15,7 @@ const Navigation = () => {
         libraries:['places'],
       })
 
+
     
 
     const center = {
@@ -28,9 +29,9 @@ const Navigation = () => {
 
 
     const [directionResponse,setDirectionsResponse] = useState(null)
-    const [distance,setDistance] = useState('')
-    const [duration,setDuration] = useState('')
-    const [cost,setCost] = useState('')
+    const [distance,setDistance] = useState('NA')
+    const [duration,setDuration] = useState('NA')
+    const [cost,setCost] = useState('NA')
 
 
     const calculateDistance = async()=>{
@@ -71,9 +72,10 @@ const Navigation = () => {
         
 
         <div className="my-auto  has-text-centered">
+            {!isLoaded && <Loading></Loading>}
             <div className="map-container rounded">
 
-            {!isLoaded && <Loading></Loading>}
+            
 
             {isLoaded && <GoogleMap
                 mapContainerStyle={{width:"100%",height:"100%"}}
@@ -133,8 +135,20 @@ const Navigation = () => {
            
 
 
-                <RideType id={"economy"}></RideType>
-                <RideType id={"premium"}></RideType>
+                {/* <RideType id={"economy"}></RideType>
+                <RideType id={"premium"}></RideType> */}
+
+
+
+                <div className="ride-type columns">
+                   
+                    <RideType id={"economy"}></RideType>\
+                    <RideType id={"premium"}></RideType>
+                    
+                    
+                    
+                    
+                </div>
 
 
 
