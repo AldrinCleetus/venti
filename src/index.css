@@ -42,6 +42,22 @@ code {
   left: 1rem;
 }
 
+.stats{
+  position: absolute;
+  bottom: 1rem;
+
+}
+
+.stats-value-container{
+  overflow: hidden;
+  width: 8rem;
+  box-shadow: 5px 5px 10px grey;
+  background-color: black;
+}
+
+
+/* Ride Types like economy and premium */
+
 .ride-type{
   position: absolute;
   bottom: 1rem;
@@ -50,8 +66,8 @@ code {
 
 .ride-type-container{
 
-  width: 12rem;
-  height: 8rem;
+  width: 8rem;
+  height: 6rem;
   box-shadow: 5px 5px 10px grey;
   background-color: black;
 }
@@ -218,6 +234,23 @@ code {
   }
 }
 
+/* For 1080p and higher */
+
+@media (min-width: 1400px) { 
+
+  .stats-value-container{
+    width: 12rem;
+
+  }
+  
+  .ride-type-container{
+
+    width: 12rem;
+    height: 8rem;
+    box-shadow: 5px 5px 10px grey;
+    background-color: black;
+  }
 
 
+ }
 

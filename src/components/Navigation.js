@@ -9,11 +9,13 @@ import Loading from "./Loading";
 
 const Navigation = () => {
 
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
-        libraries:['places'],
-      })
+    // const { isLoaded } = useJsApiLoader({
+    //     id: 'google-map-script',
+    //     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+    //     libraries:['places'],
+    //   })
+
+    const isLoaded = true
 
 
     
@@ -67,6 +69,9 @@ const Navigation = () => {
 
 
 
+
+
+
     return ( 
 
         
@@ -92,9 +97,8 @@ const Navigation = () => {
             directions={directionResponse}
             ></DirectionsRenderer>}
 
-<Stats name={"Distance"} id={"distance"} count={distance}></Stats>
-                <Stats name={"Duration"} id={"duration"} count={duration}></Stats>
-                <Stats name={"Cost"} id={"cost"} count={cost}></Stats>
+
+                
 
 
                 {/* Turn these two into components if u can */}
@@ -126,28 +130,31 @@ const Navigation = () => {
                         </div>
                 </div>
 
-                <div class="confirm" >
+                {/* <div class="confirm" >
                 <button class="button is-rounded is-primary is-size-4" onClick={calculateDistance}>Confirm</button>
                 </div>
                 <div class="cancel" >
                 <button class="button is-rounded is-primary is-size-4" onClick={clearRoute}>Cancel</button>
-                </div>
+                </div> */}
            
+                
 
+                <div className="stats columns m-0 mx-auto">
+                    <Stats name={"Distance"} count={distance}></Stats>
+                    <Stats name={"Duration"} count={duration}></Stats>
+                    <Stats name={"Cost"} count={cost}></Stats>
 
-                {/* <RideType id={"economy"}></RideType>
-                <RideType id={"premium"}></RideType> */}
-
+                    
+                    
+                </div>
 
 
                 <div className="ride-type columns">
                    
-                    <RideType id={"economy"}></RideType>\
-                    <RideType id={"premium"}></RideType>
+                    <RideType id={"economy"} name={"Economy"}></RideType>
+                    <RideType id={"premium"} name={"Premium"}></RideType>
                     
-                    
-                    
-                    
+
                 </div>
 
 
