@@ -19,11 +19,36 @@ const Navigation = () => {
 
 
     
-
+    // Temporary Data
     const center = {
         lat: 53.161910, 
         lng: -7.190269
     };
+
+    const [cabsNearMe,setCabsNearMe] = useState([{
+        driver: "John",
+        cabType: "economy",
+        distance: "3", //km
+        isSelected: false
+    },
+    {
+        driver: "Jane",
+        cabType: "premium",
+        distance: "5", //km
+        isSelected: true
+    },
+    {
+        driver: "Mathew",
+        cabType: "economy",
+        distance: "7", //km
+        isSelected: false
+    },
+    {
+        driver: "Elton",
+        cabType: "premium",
+        distance: "6", //km
+        isSelected: false
+    }])
 
 
     const currentlocationRef = useRef()
@@ -34,6 +59,10 @@ const Navigation = () => {
     const [distance,setDistance] = useState('NA')
     const [duration,setDuration] = useState('NA')
     const [cost,setCost] = useState('NA')
+
+
+    // 0 -> selecting car type, 1-> Confirmation?
+    const [processStage,setProcessStage] = useState(0)
 
 
     const calculateDistance = async()=>{
@@ -65,6 +94,31 @@ const Navigation = () => {
         setDistance("")
         currentlocationRef.current.value = ""
         destinationRef.current.value = ""
+    }
+
+    const nextProcess = ()=>{
+        setProcessStage( processStage + 1)
+    }
+
+    const selectCab = (selectedCabId)=>{
+        const newArraay = cabsNearMe.map( (ele,idx) =>{
+            if(idx === selectedCabId){
+                return({
+                    ...ele,
+                    isSelected:true
+                }) 
+            }
+            else{
+                return({
+                    ...ele,
+                    isSelected:false
+                })
+            }
+        })
+
+        setCabsNearMe(newArraay)
+
+        console.log(newArraay)
     }
 
 
@@ -131,7 +185,7 @@ const Navigation = () => {
                 </div> */}
 
 
-                <div className="test columns ">
+                <div className="search-bars columns ">
                     <div className="column ">
                         <div class="field mt-5">
                                 <div class="control has-icons-left">
@@ -169,22 +223,42 @@ const Navigation = () => {
            
                 
 
-                <div className="stats columns m-0 mx-auto">
+                {/* <div className="stats columns m-0 mx-auto">
                     <Stats name={"Distance"} count={distance}></Stats>
                     <Stats name={"Duration"} count={duration}></Stats>
                     <Stats name={"Cost"} count={cost}></Stats>
 
                     
                     
-                </div>
+                </div> */}
 
 
-                <div className="ride-type columns">
+                <div className="ride-type columns is-multiline ">
                    
-                    <RideType id={"economy"} name={"Economy"}></RideType>
-                    <RideType id={"premium"} name={"Premium"}></RideType>
+                    {/* <RideType id={"economy"}></RideType>
+                    <RideType id={"premium"}></RideType>
+                    <RideType id={"premium"}></RideType>
+                    <RideType id={"premium"}></RideType> */}
+
+
+                    {cabsNearMe.map((el,idx)=>{
+
+                        return(
+                            <RideType id={el.cabType} selected={el.isSelected} key={idx} onClick={selectCab} index={idx}></RideType>
+                        )
+
+                    })}
+
                     
 
+                </div>
+
+                <div className="columns buttons">
+                <div className="column">
+                    <button class="button is-rounded is-primary is-size-4" onClick={calculateDistance}>Book </button>
+                    </div>
+                    
+                    
                 </div>
 
 

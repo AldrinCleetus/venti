@@ -61,13 +61,12 @@ code {
 .ride-type{
   position: absolute;
   bottom: 1rem;
-  right: 1rem;
+  left: 1rem;
 }
 
 .ride-type-container{
-
   width: 8rem;
-  height: 6rem;
+  height: 5rem;
   box-shadow: 5px 5px 10px grey;
   background-color: black;
 }
@@ -85,8 +84,16 @@ code {
   left: 0px;
 }
 
+.cab-selected{
+  outline: solid 0.4rem rgb(32, 180, 32);
+}
 
 
+.buttons{
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
 
 
 #economy{
@@ -131,9 +138,10 @@ code {
   left: 0px;
 }
 
+/* Search Bar stuff here */
 
 
-.test{
+.search-bars{
   width: 100%;
   position: absolute;
   top: 0;
