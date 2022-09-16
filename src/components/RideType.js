@@ -11,11 +11,11 @@ const RideType = ({id,selected,onClick,index}) => {
 
 
     return ( 
-        <div className="column mx-1 " onClick={()=>{
+        <div className="column mx-1 py-0" onClick={()=>{
             onClick(index)
         }}>
             <a >
-            <div className={`ride-type-container has-text-white p-5 rounded ${selected? "cab-selected": ""}`} >
+            <div className={`ride-type-container has-text-white p-4  rounded ${selected? "cab-selected": ""}`} >
                     <div className="ride-type-cab-pic pop">
                         <img src={`images/${id}.png`} alt="test" />
                     </div>

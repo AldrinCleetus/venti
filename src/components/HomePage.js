@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
     return ( 
         <div className=" my-auto mx-5">
-        <div className="columns">
-          <div className="column">
-            <h3 className="is-size-3 ml-6 has-text-primary">Find your <strong>Ride!</strong></h3>
-            <p className="is-size-5 ml-6 ">Using our top notch service</p>
+        <div className="columns m-0">
+          <div className="column m-0 p-0">
+            <h3 className="is-size-3 ml-6 has-text-primary ">Find your <strong>Ride!</strong></h3>
+            <p className="is-size-5 ml-6">Using our top notch service</p>
             <img src="images/illustration.png" alt="ds" width={600}/>
           </div>
 

@@ -100,8 +100,12 @@ const Navigation = () => {
         setProcessStage( processStage + 1)
     }
 
+    const cancelBooking = ()=>{
+        setProcessStage(0)
+    }
+
     const selectCab = (selectedCabId)=>{
-        const newArraay = cabsNearMe.map( (ele,idx) =>{
+        const newCabs = cabsNearMe.map( (ele,idx) =>{
             if(idx === selectedCabId){
                 return({
                     ...ele,
@@ -116,9 +120,8 @@ const Navigation = () => {
             }
         })
 
-        setCabsNearMe(newArraay)
+        setCabsNearMe(newCabs)
 
-        console.log(newArraay)
     }
 
 
@@ -223,39 +226,42 @@ const Navigation = () => {
            
                 
 
-                {/* <div className="stats columns m-0 mx-auto">
-                    <Stats name={"Distance"} count={distance}></Stats>
-                    <Stats name={"Duration"} count={duration}></Stats>
-                    <Stats name={"Cost"} count={cost}></Stats>
-
-                    
-                    
-                </div> */}
+              
 
 
-                <div className="ride-type columns is-multiline ">
-                   
-                    {/* <RideType id={"economy"}></RideType>
-                    <RideType id={"premium"}></RideType>
-                    <RideType id={"premium"}></RideType>
-                    <RideType id={"premium"}></RideType> */}
-
-
+                {
+                    processStage === 0 && <div className="ride-type columns is-multiline ">
+        
                     {cabsNearMe.map((el,idx)=>{
-
                         return(
                             <RideType id={el.cabType} selected={el.isSelected} key={idx} onClick={selectCab} index={idx}></RideType>
                         )
-
                     })}
 
-                    
-
                 </div>
+                }
+
+
+                {
+                    processStage === 1 &&   
+                    
+                    <div className="stats columns m-0 mx-auto">
+                        <Stats name={"Distance"} count={distance}></Stats>
+                        <Stats name={"Duration"} count={duration}></Stats>
+                        <Stats name={"Cost"} count={cost}></Stats>
+                    </div>
+                }
+
+
 
                 <div className="columns buttons">
-                <div className="column">
-                    <button class="button is-rounded is-primary is-size-4" onClick={calculateDistance}>Book </button>
+                    {processStage < 1 && 
+                    <div className="column">
+                        <button class="button is-rounded is-primary is-size-4" onClick={nextProcess}>Book </button>
+                    </div>
+                    }
+                    <div className="column">
+                        <button class="button is-rounded is-primary is-size-4" onClick={cancelBooking}>Cancel </button>
                     </div>
                     
                     
