@@ -102,7 +102,7 @@ const Navigation = () => {
 
 
                 {/* Turn these two into components if u can */}
-                <div className="destination-from " >
+                {/* <div className="destination-from " >
                         <div class="field mt-5">
                         <div class="control has-icons-left">
                         <Autocomplete>
@@ -128,6 +128,36 @@ const Navigation = () => {
                             </span>
                         </div>
                         </div>
+                </div> */}
+
+
+                <div className="test columns ">
+                    <div className="column ">
+                        <div class="field mt-5">
+                                <div class="control has-icons-left">
+                                    <Autocomplete>
+                                        <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}/>
+                                    </Autocomplete>
+                                    <span class="icon is-medium is-left mt-2 ml-2">
+                                        <img src="images/button1.svg" alt=""/>
+                                    </span>
+
+                                </div>
+                        </div>
+                    </div>
+                    <div className="column ">
+                    <div class="field mt-5">
+                            <div class="control has-icons-left">
+                            <Autocomplete>
+                            <input class="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="email" placeholder="To" ref={destinationRef}/>
+                            </Autocomplete>
+                            <span class="icon is-medium mt-2 ml-2 is-left">
+                            <img src="images/button2.svg" alt="" />
+                            </span>
+                        </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 {/* <div class="confirm" >

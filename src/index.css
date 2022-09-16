@@ -131,6 +131,16 @@ code {
   left: 0px;
 }
 
+
+
+.test{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 1rem;
+}
+
+
 .destination-from{
   width: 30rem;
   position: absolute;
