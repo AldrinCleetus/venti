@@ -2,54 +2,18 @@ import RideType from "./RideType";
 import Stats from "./Stats";
 
 import { GoogleMap,Marker, useJsApiLoader, Autocomplete, DirectionsRenderer } from '@react-google-maps/api';
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Loading from "./Loading";
-
+import useFetch from "../hooks/useFetch";
 
 
 const Navigation = () => {
 
-    // const { isLoaded } = useJsApiLoader({
-    //     id: 'google-map-script',
-    //     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
-    //     libraries:['places'],
-    //   })
-
-    const isLoaded = true
-
-
-    
-    // Temporary Data
-    const center = {
-        lat: 53.161910, 
-        lng: -7.190269
-    };
-
-    const [cabsNearMe,setCabsNearMe] = useState([{
-        driver: "John",
-        cabType: "economy",
-        distance: "3", //km
-        isSelected: false
-    },
-    {
-        driver: "Jane",
-        cabType: "premium",
-        distance: "5", //km
-        isSelected: true
-    },
-    {
-        driver: "Mathew",
-        cabType: "economy",
-        distance: "7", //km
-        isSelected: false
-    },
-    {
-        driver: "Elton",
-        cabType: "premium",
-        distance: "6", //km
-        isSelected: false
-    }])
-
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+        libraries:['places'],
+      })
 
     const currentlocationRef = useRef()
     const destinationRef = useRef()
@@ -63,7 +27,53 @@ const Navigation = () => {
 
     // 0 -> selecting car type, 1-> Confirmation?
     const [processStage,setProcessStage] = useState(0)
+    const [center,setCenter] = useState({
+        lat: 6.6418,
+        lng: 3.3515
+    })
 
+    const [test,setTest] = useState("hmmm")
+
+    const [cabsNearMe,setCabsNearMe] = useState([{
+        driver: "John",
+        cabType: "economy",
+        distance: "3", //km
+        isSelected: false,
+        location: {
+            lng: center.lng + Math.random() * 0.01 ,
+            lat: center.lat + Math.random() * 0.01 
+        }
+    },
+    {
+        driver: "Jane",
+        cabType: "premium",
+        distance: "5", //km
+        isSelected: true,
+        location: {
+            lat:  center.lat + Math.random() * 0.01 ,
+            lng: center.lng + Math.random() * 0.01 
+        }
+    },
+    {
+        driver: "Mathew",
+        cabType: "economy",
+        distance: "7", //km
+        isSelected: false,
+        location: {
+            lat: center.lat + Math.random() * 0.01 ,
+            lng: center.lng + Math.random() * 0.01 
+        }
+    },
+    {
+        driver: "Elton",
+        cabType: "premium",
+        distance: "6", //km
+        isSelected: false,
+        location: {
+            lat: center.lat + Math.random() * 0.01 ,
+            lng: center.lng + Math.random() * 0.01 
+        }
+    }])
 
     const calculateDistance = async()=>{
         if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
@@ -76,7 +86,16 @@ const Navigation = () => {
             origin:currentlocationRef.current.value,
             destination: destinationRef.current.value,
             // eslint-disable-next-line no-undef
-            travelMode: google.maps.TravelMode.DRIVING
+            travelMode: google.maps.TravelMode.DRIVING,
+            waypoints: [
+                {
+                    // eslint-disable-next-line no-undef
+                    location: new google.maps.LatLng(6.4698,3.5852)
+                },
+                {
+                    // eslint-disable-next-line no-undef
+                    location: new google.maps.LatLng(6.6018,3.3515)
+                }]
         })
 
         setDirectionsResponse(results)
@@ -124,6 +143,86 @@ const Navigation = () => {
 
     }
 
+    
+    const locationMouseClicked = (e)=>{
+        // console.log(autoComplete.getPlace(currentlocationRef.current.value))
+        // console.log(e.latLng.lng())
+        console.log("huh")
+    }
+
+
+
+    const buttonpressed = (e)=>{
+       
+
+        console.log((currentlocationRef.current.value))
+    }
+
+
+    const [place,setCurrentPlace] = useState(1)
+
+    const [data,setData] = useState('d')
+    const [loading,setLoading] = useState(false)
+    const [error,setError] = useState(null)
+
+    const testy = `https://jsonplaceholder.typicode.com/todos/${place}`
+
+    const getMeData = async(url)=>{
+        setLoading(true)
+        fetch(testy)
+        .then(res =>{
+            return res.json()
+        })
+        .then(json =>{
+            setData(json)
+            setCurrentPlace(place + 1)
+            console.log(data)
+        })
+        .catch(err=>{
+            setError(err)
+            console.log(err)
+        })
+        .finally(
+            setLoading(false)
+        )
+
+        
+    }
+
+   
+
+    const [newTestDummy,setTestDummy] = useState(null) 
+   
+    useEffect(()=>{
+        console.log(newTestDummy)
+        setCenter(newTestDummy)
+    },[newTestDummy])
+
+    const getCoordinates = async ()=>{
+
+        const formattedAddress = currentlocationRef.current.value.replace(/\s/g, '')
+        console.log("fetching ",formattedAddress)
+
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
+        .then(res =>{
+            if(res.ok){
+                return res.json()
+            }
+        })
+        .then(data =>{
+            setTestDummy({
+                lat:data.results[0].geometry.location.lat,
+                lng:data.results[0].geometry.location.lng
+            })
+        })
+    }
+
+   
+
+
+    
+
+ 
 
 
 
@@ -134,7 +233,7 @@ const Navigation = () => {
         
 
         <div className="my-auto  has-text-centered">
-            {!isLoaded && <Loading></Loading>}
+            {loading && <Loading></Loading>}
             <div className="map-container rounded">
 
             
@@ -148,6 +247,7 @@ const Navigation = () => {
                     fullscreenControl:false,
                     streetViewControl:false
                 }}
+                onClick={locationMouseClicked}
                 >
             {directionResponse && 
             <DirectionsRenderer
@@ -156,7 +256,13 @@ const Navigation = () => {
 
 
                 
-
+                
+                
+                {/* {cabsNearMe.map((el,i)=>{
+                    return (<Marker position={el.location} key={i}></Marker>)
+                })} */}
+               
+               
 
                 {/* Turn these two into components if u can */}
                 {/* <div className="destination-from " >
@@ -192,7 +298,8 @@ const Navigation = () => {
                     <div className="column ">
                         <div class="field mt-5">
                                 <div class="control has-icons-left">
-                                    <Autocomplete>
+                                    <Autocomplete
+                                    onPlaceChanged={getCoordinates}>
                                         <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}/>
                                     </Autocomplete>
                                     <span class="icon is-medium is-left mt-2 ml-2">
@@ -229,7 +336,7 @@ const Navigation = () => {
               
 
 
-                {
+                {/* {
                     processStage === 0 && <div className="ride-type columns is-multiline ">
         
                     {cabsNearMe.map((el,idx)=>{
@@ -250,12 +357,17 @@ const Navigation = () => {
                         <Stats name={"Duration"} count={duration}></Stats>
                         <Stats name={"Cost"} count={cost}></Stats>
                     </div>
-                }
+                } */}
 
 
 
                 <div className="columns buttons">
-                    {processStage < 1 && 
+                    {processStage === 0 && 
+                    <div className="column">
+                        <button class="button is-rounded is-primary is-size-4" onClick={ getMeData}>Confirm Pick Up</button>
+                    </div>
+                    }
+                    {processStage === 1 && 
                     <div className="column">
                         <button class="button is-rounded is-primary is-size-4" onClick={nextProcess}>Book </button>
                     </div>
@@ -268,7 +380,7 @@ const Navigation = () => {
                 </div>
 
 
-
+               
             </GoogleMap>}
 
                 
