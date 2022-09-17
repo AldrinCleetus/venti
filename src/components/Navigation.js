@@ -4,7 +4,7 @@ import Stats from "./Stats";
 import { GoogleMap,Marker, useJsApiLoader, Autocomplete, DirectionsRenderer } from '@react-google-maps/api';
 import { useEffect, useMemo, useRef, useState } from "react";
 import Loading from "./Loading";
-import useFetch from "../hooks/useFetch";
+
 
 
 const Navigation = () => {
@@ -27,12 +27,12 @@ const Navigation = () => {
 
     // 0 -> selecting car type, 1-> Confirmation?
     const [processStage,setProcessStage] = useState(0)
+    // Default Center
     const [center,setCenter] = useState({
         lat: 6.6418,
         lng: 3.3515
     })
 
-    const [test,setTest] = useState("hmmm")
 
     const [cabsNearMe,setCabsNearMe] = useState([{
         driver: "John",
@@ -144,11 +144,7 @@ const Navigation = () => {
     }
 
     
-    const locationMouseClicked = (e)=>{
-        // console.log(autoComplete.getPlace(currentlocationRef.current.value))
-        // console.log(e.latLng.lng())
-        console.log("huh")
-    }
+
 
 
 
@@ -161,60 +157,43 @@ const Navigation = () => {
 
     const [place,setCurrentPlace] = useState(1)
 
-    const [data,setData] = useState('d')
     const [loading,setLoading] = useState(false)
-    const [error,setError] = useState(null)
-
-    const testy = `https://jsonplaceholder.typicode.com/todos/${place}`
-
-    const getMeData = async(url)=>{
-        setLoading(true)
-        fetch(testy)
-        .then(res =>{
-            return res.json()
-        })
-        .then(json =>{
-            setData(json)
-            setCurrentPlace(place + 1)
-            console.log(data)
-        })
-        .catch(err=>{
-            setError(err)
-            console.log(err)
-        })
-        .finally(
-            setLoading(false)
-        )
-
-        
-    }
 
    
 
-    const [newTestDummy,setTestDummy] = useState(null) 
+    const [newCoords,setNewCoords] = useState(center) 
    
     useEffect(()=>{
-        console.log(newTestDummy)
-        setCenter(newTestDummy)
-    },[newTestDummy])
+        console.log(newCoords)
+        setCenter(newCoords)
+    },[newCoords])
 
     const getCoordinates = async ()=>{
 
         const formattedAddress = currentlocationRef.current.value.replace(/\s/g, '')
         console.log("fetching ",formattedAddress)
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+            
+            setNewCoords({
+                    lat:5.4,
+                    lng:7.2
+                })
+        }, 2000);
 
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
-        .then(res =>{
-            if(res.ok){
-                return res.json()
-            }
-        })
-        .then(data =>{
-            setTestDummy({
-                lat:data.results[0].geometry.location.lat,
-                lng:data.results[0].geometry.location.lng
-            })
-        })
+        // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
+        // .then(res =>{
+        //     if(res.ok){
+        //         return res.json()
+        //     }
+        // })
+        // .then(data =>{
+        //     setNewCoords({
+        //         lat:data.results[0].geometry.location.lat,
+        //         lng:data.results[0].geometry.location.lng
+        //     })
+        // })
     }
 
    
@@ -233,6 +212,7 @@ const Navigation = () => {
         
 
         <div className="my-auto  has-text-centered">
+            {!isLoaded && <Loading></Loading>}
             {loading && <Loading></Loading>}
             <div className="map-container rounded">
 
@@ -247,7 +227,6 @@ const Navigation = () => {
                     fullscreenControl:false,
                     streetViewControl:false
                 }}
-                onClick={locationMouseClicked}
                 >
             {directionResponse && 
             <DirectionsRenderer
@@ -336,7 +315,7 @@ const Navigation = () => {
               
 
 
-                {/* {
+                {
                     processStage === 0 && <div className="ride-type columns is-multiline ">
         
                     {cabsNearMe.map((el,idx)=>{
@@ -357,14 +336,14 @@ const Navigation = () => {
                         <Stats name={"Duration"} count={duration}></Stats>
                         <Stats name={"Cost"} count={cost}></Stats>
                     </div>
-                } */}
+                }
 
 
 
                 <div className="columns buttons">
                     {processStage === 0 && 
                     <div className="column">
-                        <button class="button is-rounded is-primary is-size-4" onClick={ getMeData}>Confirm Pick Up</button>
+                        <button class="button is-rounded is-primary is-size-4" onClick={ nextProcess}>Confirm Pick Up</button>
                     </div>
                     }
                     {processStage === 1 && 
