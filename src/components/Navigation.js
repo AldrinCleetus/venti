@@ -221,7 +221,7 @@ const Navigation = ({location,isLoaded}) => {
         console.log("booking done!")
     }
     
-    const calculateCost = (distu)=>{
+    const calculateCost = (currentDistance)=>{
         const intitalFare = 20 // Booking Fee
         const costPerKM = 11 // Rupees per km
         const hours = new Date().getHours()
@@ -252,14 +252,13 @@ const Navigation = ({location,isLoaded}) => {
         }
 
  
-        let dist = distu.split(' ')[0]
+        let distanceValue = currentDistance.split(' ')[0]
 
         // if(distance != undefined){
             
         // }
 
-        const totalCost = Math.round((costPerKM * dist) * dayTimeCostMultiplier * cabMultiplier   + intitalFare) 
-        console.log(costPerKM," * ",dist," * ",dayTimeCostMultiplier," + ",intitalFare)
+        const totalCost = Math.round((costPerKM * distanceValue) * dayTimeCostMultiplier * cabMultiplier   + intitalFare) 
         return (totalCost+" $")
     }
 
@@ -296,13 +295,13 @@ const Navigation = ({location,isLoaded}) => {
             ></DirectionsRenderer>}
 
 
+
                 
                 
-                
-                {/* {cabsNearMe.map((el,i)=>{
+                {/* {isLoaded && cabsNearMe.map((el,i)=>{
                     return (<Marker position={el.location} key={i}></Marker>)
-                })} */}
-               
+                })}
+                */}
                
 
                 {/* Turn these two into components if u can */}
@@ -423,6 +422,8 @@ const Navigation = ({location,isLoaded}) => {
                     
                     
                 </div>
+
+
 
 
                

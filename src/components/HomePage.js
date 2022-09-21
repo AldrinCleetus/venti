@@ -33,34 +33,37 @@ const HomePage = ({setLocation,isLoaded}) => {
 
           {isLoaded &&
           <div className="column my-auto is-5 has-background-dark rounded mr-6 ">
-          <div class="field ">
-            <label class="label has-text-white is-size-3">Choose Your Destination</label>
-            <div class="control has-icons-left">
+          <div className="field ">
+            <label className="label has-text-white is-size-3">Choose Your Destination</label>
+            <div className="control has-icons-left">
             <Autocomplete>
-                  <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={originLocation}/>
+                  <input className=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="text" placeholder="From" ref={originLocation} required />
               </Autocomplete>
-              <span class="icon is-medium is-left mt-2 ml-2">
+              <span className="icon is-medium is-left mt-2 ml-2">
                   <img src="images/button1.svg" alt=""/>
               </span>
             </div>
           </div>
-          <div class="field mt-5">
-            <div class="control has-icons-left">
+          <form action="">
+          <div className="field mt-5">
+            <div className="control has-icons-left">
             <Autocomplete>
-            <input class="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="email" placeholder="To" ref={destinationLocation} />
+            <input className="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="text" placeholder="To" ref={destinationLocation}  required />
             </Autocomplete>
-            <span class="icon is-medium mt-2 ml-2 is-left">
+            <span className="icon is-medium mt-2 ml-2 is-left">
             <img src="images/button2.svg" alt="" />
             </span>
             </div>
           </div>
 
-          <div class="field is-grouped">
-            <div class="control mx-auto">
-              <button class="button is-rounded is-primary is-size-4" onClick={passLocationData}><Link to="/navigation">Find my Ride</Link></button>
+          <div className="field is-grouped">
+            <div className="control mx-auto">
+              {/* <button className="button is-rounded is-primary is-size-4" type="submit" onClick={passLocationData}><Link type="submit" to="/navigation">Find my Ride</Link></button> */}
+              <Link onClick={passLocationData} type="submit" to="/navigation" className="button is-rounded is-primary is-size-4">Find My Ride</Link>
             </div>
 
           </div>
+          </form>
         </div>}
           
         </div>
