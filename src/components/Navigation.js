@@ -7,22 +7,28 @@ import Loading from "./Loading";
 
 
 
-const Navigation = () => {
 
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
-        libraries:['places'],
-      })
+const Navigation = ({location,isLoaded}) => {
 
-    const currentlocationRef = useRef()
-    const destinationRef = useRef()
+    
+
+    const currentlocationRef = useRef('')
+    const destinationRef = useRef('')
+
+    
+
+    useEffect(()=>{
+        if(isLoaded){
+            console.log(location.origin)
+            getCoordinates()
+        }
+    },[isLoaded])
 
 
     const [directionResponse,setDirectionsResponse] = useState(null)
-    const [distance,setDistance] = useState('NA')
-    const [duration,setDuration] = useState('NA')
-    const [cost,setCost] = useState('NA')
+    const [distance,setDistance] = useState()
+    const [duration,setDuration] = useState()
+    const [cost,setCost] = useState()
 
 
     // 0 -> selecting car type, 1-> Confirmation?
@@ -87,21 +93,27 @@ const Navigation = () => {
             destination: destinationRef.current.value,
             // eslint-disable-next-line no-undef
             travelMode: google.maps.TravelMode.DRIVING,
-            waypoints: [
-                {
-                    // eslint-disable-next-line no-undef
-                    location: new google.maps.LatLng(6.4698,3.5852)
-                },
-                {
-                    // eslint-disable-next-line no-undef
-                    location: new google.maps.LatLng(6.6018,3.3515)
-                }]
+            // waypoints: [
+            //     {
+            //         // eslint-disable-next-line no-undef
+            //         location: new google.maps.LatLng(6.4698,3.5852)
+            //     },
+            //     {
+            //         // eslint-disable-next-line no-undef
+            //         location: new google.maps.LatLng(6.6018,3.3515)
+            //     }]
         })
 
         setDirectionsResponse(results)
         // Take the first route 
         setDistance(results.routes[0].legs[0].distance.text)
         setDuration(results.routes[0].legs[0].duration.text)
+        
+
+        const costy = calculateCost(results.routes[0].legs[0].distance.text)
+        setCost(costy)
+
+        setProcessStage(processStage + 1 )
 
 
 
@@ -121,6 +133,7 @@ const Navigation = () => {
 
     const cancelBooking = ()=>{
         setProcessStage(0)
+        clearRoute()
     }
 
     const selectCab = (selectedCabId)=>{
@@ -145,18 +158,6 @@ const Navigation = () => {
 
     
 
-
-
-
-    const buttonpressed = (e)=>{
-       
-
-        console.log((currentlocationRef.current.value))
-    }
-
-
-    const [place,setCurrentPlace] = useState(1)
-
     const [loading,setLoading] = useState(false)
 
    
@@ -164,42 +165,103 @@ const Navigation = () => {
     const [newCoords,setNewCoords] = useState(center) 
    
     useEffect(()=>{
-        console.log(newCoords)
+        //console.log(newCoords)
         setCenter(newCoords)
     },[newCoords])
 
+    const locationChanged = ()=>{
+        setProcessStage(0)
+        getCoordinates()
+    }
+
     const getCoordinates = async ()=>{
 
-        const formattedAddress = currentlocationRef.current.value.replace(/\s/g, '')
+        if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
+            return
+        }
+
+        //const formattedAddress = currentlocationRef.current.value.replace(/\s/g, '')
+        const formattedAddress = location.origin.replace(/\s/g, '')
         console.log("fetching ",formattedAddress)
         setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
+        // setTimeout(() => {
+        //     setLoading(false)
             
-            setNewCoords({
-                    lat:5.4,
-                    lng:7.2
-                })
-        }, 2000);
-
-        // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
-        // .then(res =>{
-        //     if(res.ok){
-        //         return res.json()
-        //     }
-        // })
-        // .then(data =>{
         //     setNewCoords({
-        //         lat:data.results[0].geometry.location.lat,
-        //         lng:data.results[0].geometry.location.lng
-        //     })
-        // })
+        //             lat:5.4,
+        //             lng:7.2
+        //         })
+
+                
+        // }, 2000);
+
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
+        .then(res =>{
+            if(res.ok){
+                return res.json()
+            }
+        })
+        .then(data =>{
+            setLoading(false)
+            setNewCoords({
+                lat:data.results[0].geometry.location.lat,
+                lng:data.results[0].geometry.location.lng
+            })
+        })
     }
 
    
 
+    const setInitialValues = ()=>{
+        currentlocationRef.current.value = location.origin
+        destinationRef.current.value = location.destination
+    }
 
+    const demoDone = ()=>{
+        console.log("booking done!")
+    }
     
+    const calculateCost = (distu)=>{
+        const intitalFare = 20 // Booking Fee
+        const costPerKM = 11 // Rupees per km
+        const hours = new Date().getHours()
+        const isDayTime = hours > 6 && hours < 20
+        let dayTimeCostMultiplier = 1
+        if(isDayTime){
+            dayTimeCostMultiplier = 1.2
+        }
+
+        const cabType  = cabsNearMe.map((el,idx)=>{
+            if(el.isSelected){
+                return el.cabType
+            }
+        })
+
+        let cabMultiplier = 1
+
+        switch (cabType) {
+            case "economy":
+                cabMultiplier = 1.2
+                break;
+            case "premium":
+                cabMultiplier = 1.6
+                break;
+            default:
+                cabMultiplier = 1
+                break;
+        }
+
+ 
+        let dist = distu.split(' ')[0]
+
+        // if(distance != undefined){
+            
+        // }
+
+        const totalCost = Math.round((costPerKM * dist) * dayTimeCostMultiplier * cabMultiplier   + intitalFare) 
+        console.log(costPerKM," * ",dist," * ",dayTimeCostMultiplier," + ",intitalFare)
+        return (totalCost+" $")
+    }
 
  
 
@@ -278,8 +340,11 @@ const Navigation = () => {
                         <div class="field mt-5">
                                 <div class="control has-icons-left">
                                     <Autocomplete
-                                    onPlaceChanged={getCoordinates}>
-                                        <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}/>
+                                    onLoad={setInitialValues}
+                                    onPlaceChanged={locationChanged}
+                                    >
+                                        <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}
+                                        />
                                     </Autocomplete>
                                     <span class="icon is-medium is-left mt-2 ml-2">
                                         <img src="images/button1.svg" alt=""/>
@@ -291,7 +356,8 @@ const Navigation = () => {
                     <div className="column ">
                     <div class="field mt-5">
                             <div class="control has-icons-left">
-                            <Autocomplete>
+                            <Autocomplete
+                            onPlaceChanged={locationChanged}>
                             <input class="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="email" placeholder="To" ref={destinationRef}/>
                             </Autocomplete>
                             <span class="icon is-medium mt-2 ml-2 is-left">
@@ -343,17 +409,17 @@ const Navigation = () => {
                 <div className="columns buttons">
                     {processStage === 0 && 
                     <div className="column">
-                        <button class="button is-rounded is-primary is-size-4" onClick={ nextProcess}>Confirm Pick Up</button>
+                        <button class="button is-rounded is-primary is-size-4" onClick={ calculateDistance}>Book</button>
                     </div>
                     }
                     {processStage === 1 && 
                     <div className="column">
-                        <button class="button is-rounded is-primary is-size-4" onClick={nextProcess}>Book </button>
+                        <button class="button is-rounded is-primary is-size-4" onClick={nextProcess}>Confirm </button>
                     </div>
                     }
-                    <div className="column">
+                   {processStage > 0 && <div className="column">
                         <button class="button is-rounded is-primary is-size-4" onClick={cancelBooking}>Cancel </button>
-                    </div>
+                    </div>}
                     
                     
                 </div>

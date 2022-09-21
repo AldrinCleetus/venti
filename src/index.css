@@ -50,7 +50,7 @@ code {
 
 .stats-value-container{
   overflow: hidden;
-  width: 8rem;
+  width: 12rem;
   box-shadow: 5px 5px 10px grey;
   background-color: black;
 }
@@ -257,7 +257,8 @@ code {
 @media (min-width: 1400px) { 
 
   .stats-value-container{
-    width: 12rem;
+    min-width: 15rem;
+    width: 20rem;
 
   }
   
