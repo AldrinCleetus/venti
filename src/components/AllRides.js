@@ -12,7 +12,7 @@ const AllRides = () => {
     
     return ( 
         
-        <div className="hero is-fullheight ">
+        <div className="hero is-fullheight " >
             <div className="hero-head  mx-auto">
                 <div className="is-size-1 mt-4 ">Our Ride Types</div>
             </div>

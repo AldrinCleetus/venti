@@ -81,6 +81,13 @@ const Navigation = ({location,isLoaded}) => {
         }
     }])
 
+
+    const [modal,setModal] = useState(false)
+
+    const toggleModal  = ()=>{
+        setModal( modal? false : true)
+    }
+
     const calculateDistance = async()=>{
         if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
             return
@@ -129,6 +136,7 @@ const Navigation = ({location,isLoaded}) => {
 
     const nextProcess = ()=>{
         setProcessStage( processStage + 1)
+        setModal(true)
     }
 
     const cancelBooking = ()=>{
@@ -433,6 +441,14 @@ const Navigation = ({location,isLoaded}) => {
             
 
 
+            </div>
+
+            <div class={`modal ${modal? "is-active": ""}`}>
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <button className="button is-large is-rounded is-primary" onClick={toggleModal}>Thank you for using Venti to Book your cab!</button>
+            </div>
+            <button class="modal-close is-large" aria-label="close" onClick={toggleModal}></button>
             </div>
         </div>
      );

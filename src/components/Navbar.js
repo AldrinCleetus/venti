@@ -10,13 +10,23 @@ const NavBar = () => {
         <div className="px-6">
         <nav className="navbar is-black" role="navigation" aria-label="main navigation">
         <div className="navbar-brand ">
-            <div className="navbar-item is-size-5">
-                <a href="#"><strong><Link to="/">Venti</Link></strong></a>
-            </div>            
+            
+            <div className="navbar-item">
+                <Link to='/'><img  src="images/logo.png" /></Link>
+            </div>           
         </div>
         <div className="navbar-end">
-            <div className="navbar-item">
-                <img  src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fclipground.com%2Fimages%2Fplaceholder-logo-5.png&f=1&nofb=1" />
+            
+            <div className="navbar-item fade-in-animation">
+                <a className="button is-black is-rounded CButton" href="#rides">Ride Types</a>
+            </div>
+
+            <div className="navbar-item fade-in-animation">
+                <a href="#stats" className="button is-black is-rounded CButton">Login</a>
+            </div>
+
+            <div className="navbar-item fade-in-animation">
+                <a href="#contact" className="button CButton is-primary is-rounded">Sign Up</a>
             </div>
 
         </div>

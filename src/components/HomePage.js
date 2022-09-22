@@ -23,8 +23,8 @@ const HomePage = ({setLocation,isLoaded}) => {
    
 
     return ( 
-        <div className=" my-auto mx-5">
-        <div className="columns m-0">
+        <div className="hero is-fullheight my-auto mx-5">
+        <div className="columns m-0 mt-6">
           <div className="column m-0 p-0">
             <h3 className="is-size-3 ml-6 has-text-primary ">Find your <strong>Ride!</strong></h3>
             <p className="is-size-5 ml-6">Using our top notch service</p>
@@ -44,7 +44,7 @@ const HomePage = ({setLocation,isLoaded}) => {
               </span>
             </div>
           </div>
-          <form action="">
+          
           <div className="field mt-5">
             <div className="control has-icons-left">
             <Autocomplete>
@@ -59,11 +59,11 @@ const HomePage = ({setLocation,isLoaded}) => {
           <div className="field is-grouped">
             <div className="control mx-auto">
               {/* <button className="button is-rounded is-primary is-size-4" type="submit" onClick={passLocationData}><Link type="submit" to="/navigation">Find my Ride</Link></button> */}
-              <Link onClick={passLocationData} type="submit" to="/navigation" className="button is-rounded is-primary is-size-4">Find My Ride</Link>
+              <Link onClick={passLocationData}to="/navigation" className="button is-rounded is-primary is-size-4">Find My Ride</Link>
             </div>
 
           </div>
-          </form>
+          
         </div>}
           
         </div>
