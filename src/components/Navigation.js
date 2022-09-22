@@ -58,7 +58,7 @@ const Navigation = ({location,isLoaded}) => {
     {
         cabType: "luxury",
         isSelected: false
-    },  
+    }  
     ])
 
 
