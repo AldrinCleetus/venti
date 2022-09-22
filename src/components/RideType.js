@@ -15,7 +15,7 @@ const RideType = ({id,selected,onClick,index}) => {
             onClick(index)
         }}>
             <a >
-            <div className={`ride-type-container has-text-white p-4  rounded ${selected? "cab-selected": ""}`} >
+            <div className={`ride-type-container has-text-white p-4  rounded ${selected? "cab-selected": ""} fade-in-animation`} >
                     <div className="ride-type-cab-pic pop">
                         <img src={`images/${id}.png`} alt="test" />
                     </div>

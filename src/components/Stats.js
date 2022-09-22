@@ -1,6 +1,6 @@
 const Stats = ({name,count}) => {
     return ( 
-        <div className="column py-0 m-0">
+        <div className="column py-0 m-0 fade-in-animation">
             <div className="stats-value-container has-text-white p-5 rounded" >
                 <div className="count is-size-2-fullhd is-size-5">
                     {count}

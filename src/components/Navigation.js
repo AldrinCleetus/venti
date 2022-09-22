@@ -267,7 +267,7 @@ const Navigation = ({location,isLoaded}) => {
         // }
 
         const totalCost = Math.round((costPerKM * distanceValue) * dayTimeCostMultiplier * cabMultiplier   + intitalFare) 
-        return (totalCost+" $")
+        return (totalCost+" ₹")
     }
 
  
