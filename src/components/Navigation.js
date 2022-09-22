@@ -25,10 +25,17 @@ const Navigation = ({location,isLoaded}) => {
     },[isLoaded])
 
 
+   
+
+
     const [directionResponse,setDirectionsResponse] = useState(null)
     const [distance,setDistance] = useState()
     const [duration,setDuration] = useState()
     const [cost,setCost] = useState()
+
+    useEffect(()=>{
+        console.log("Direction CHanged")
+    },[directionResponse])
 
 
     // 0 -> selecting car type, 1-> Confirmation?
@@ -41,45 +48,18 @@ const Navigation = ({location,isLoaded}) => {
 
 
     const [cabsNearMe,setCabsNearMe] = useState([{
-        driver: "John",
         cabType: "economy",
-        distance: "3", //km
-        isSelected: false,
-        location: {
-            lng: center.lng + Math.random() * 0.01 ,
-            lat: center.lat + Math.random() * 0.01 
-        }
+        isSelected: false
     },
     {
-        driver: "Jane",
         cabType: "premium",
-        distance: "5", //km
-        isSelected: true,
-        location: {
-            lat:  center.lat + Math.random() * 0.01 ,
-            lng: center.lng + Math.random() * 0.01 
-        }
+        isSelected: true
     },
     {
-        driver: "Mathew",
-        cabType: "economy",
-        distance: "7", //km
-        isSelected: false,
-        location: {
-            lat: center.lat + Math.random() * 0.01 ,
-            lng: center.lng + Math.random() * 0.01 
-        }
-    },
-    {
-        driver: "Elton",
-        cabType: "premium",
-        distance: "6", //km
-        isSelected: false,
-        location: {
-            lat: center.lat + Math.random() * 0.01 ,
-            lng: center.lng + Math.random() * 0.01 
-        }
-    }])
+        cabType: "luxury",
+        isSelected: false
+    },  
+    ])
 
 
     const [modal,setModal] = useState(false)
@@ -133,6 +113,7 @@ const Navigation = ({location,isLoaded}) => {
         currentlocationRef.current.value = ""
         destinationRef.current.value = ""
     }
+
 
     const nextProcess = ()=>{
         setProcessStage( processStage + 1)
@@ -188,7 +169,6 @@ const Navigation = ({location,isLoaded}) => {
             return
         }
 
-        //const formattedAddress = currentlocationRef.current.value.replace(/\s/g, '')
         const formattedAddress = location.origin.replace(/\s/g, '')
         console.log("fetching ",formattedAddress)
         setLoading(true)
@@ -225,9 +205,6 @@ const Navigation = ({location,isLoaded}) => {
         destinationRef.current.value = location.destination
     }
 
-    const demoDone = ()=>{
-        console.log("booking done!")
-    }
     
     const calculateCost = (currentDistance)=>{
         const intitalFare = 20 // Booking Fee
@@ -253,6 +230,9 @@ const Navigation = ({location,isLoaded}) => {
                 break;
             case "premium":
                 cabMultiplier = 1.6
+                break;
+            case "luxury":
+                cabMultiplier = 2
                 break;
             default:
                 cabMultiplier = 1
@@ -303,45 +283,6 @@ const Navigation = ({location,isLoaded}) => {
             ></DirectionsRenderer>}
 
 
-
-                
-                
-                {/* {isLoaded && cabsNearMe.map((el,i)=>{
-                    return (<Marker position={el.location} key={i}></Marker>)
-                })}
-                */}
-               
-
-                {/* Turn these two into components if u can */}
-                {/* <div className="destination-from " >
-                        <div class="field mt-5">
-                        <div class="control has-icons-left">
-                        <Autocomplete>
-                            <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}/>
-                        </Autocomplete>
-                        <span class="icon is-medium is-left mt-2 ml-2">
-                            <img src="images/button1.svg" alt=""/>
-                        </span>
-                        
-                    </div>
-                    </div>
-                </div>
-
-
-                <div className="destination-to">
-                    <div class="field mt-5">
-                            <div class="control has-icons-left">
-                            <Autocomplete>
-                            <input class="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="email" placeholder="To" ref={destinationRef}/>
-                            </Autocomplete>
-                            <span class="icon is-medium mt-2 ml-2 is-left">
-                            <img src="images/button2.svg" alt="" />
-                            </span>
-                        </div>
-                        </div>
-                </div> */}
-
-
                 <div className="search-bars columns ">
                     <div className="column ">
                         <div class="field mt-5">
@@ -376,16 +317,6 @@ const Navigation = ({location,isLoaded}) => {
 
                 </div>
 
-                {/* <div class="confirm" >
-                <button class="button is-rounded is-primary is-size-4" onClick={calculateDistance}>Confirm</button>
-                </div>
-                <div class="cancel" >
-                <button class="button is-rounded is-primary is-size-4" onClick={clearRoute}>Cancel</button>
-                </div> */}
-           
-                
-
-              
 
 
                 {
