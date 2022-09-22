@@ -7,6 +7,7 @@ import userEvent from "@testing-library/user-event";
 import { useRef } from "react";
 
 import { useJsApiLoader } from "@react-google-maps/api";
+import AllRides from "./components/AllRides";
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
     libraries:['places'],
   })
+
+  
 
 
 
@@ -36,6 +39,7 @@ function App() {
         <Route path="/navigation" element={<Navigation location={location} isLoaded={isLoaded}></Navigation>}></Route>
       </Routes>
 
+      <AllRides></AllRides>
       
     </div>
   );
