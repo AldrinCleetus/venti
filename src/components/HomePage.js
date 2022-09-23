@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Autocomplete , useJsApiLoader} from "@react-google-maps/api";
 import { useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const HomePage = ({setLocation,isLoaded}) => {
 
@@ -12,6 +14,21 @@ const HomePage = ({setLocation,isLoaded}) => {
 
   const originLocation = useRef('')
   const destinationLocation = useRef('')
+
+  const [dataFilled,setDataFilled] = useState(false)
+
+  useEffect(()=>{
+    
+  },[originLocation,destinationLocation])
+
+
+  const updateLocation = ()=>{
+    if(originLocation.current.value !== '' && destinationLocation.current.value !== ''){
+      setDataFilled(true)
+    }else{
+      setDataFilled(false)
+    }
+  }
 
   const passLocationData = ()=>{
       setLocation({
@@ -36,7 +53,8 @@ const HomePage = ({setLocation,isLoaded}) => {
           <div className="field ">
             <label className="label has-text-white is-size-3">Choose Your Destination</label>
             <div className="control has-icons-left">
-            <Autocomplete>
+            <Autocomplete
+            onPlaceChanged={updateLocation}>
                   <input className=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="text" placeholder="From" ref={originLocation} required />
               </Autocomplete>
               <span className="icon is-medium is-left mt-2 ml-2">
@@ -47,7 +65,8 @@ const HomePage = ({setLocation,isLoaded}) => {
           
           <div className="field mt-5">
             <div className="control has-icons-left">
-            <Autocomplete>
+            <Autocomplete
+             onPlaceChanged={updateLocation}>
             <input className="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="text" placeholder="To" ref={destinationLocation}  required />
             </Autocomplete>
             <span className="icon is-medium mt-2 ml-2 is-left">
@@ -59,7 +78,7 @@ const HomePage = ({setLocation,isLoaded}) => {
           <div className="field is-grouped">
             <div className="control mx-auto">
               {/* <button className="button is-rounded is-primary is-size-4" type="submit" onClick={passLocationData}><Link type="submit" to="/navigation">Find my Ride</Link></button> */}
-              <Link onClick={passLocationData}to="/navigation" className="button is-rounded is-primary is-size-4">Find My Ride</Link>
+              <Link onClick={passLocationData}to={dataFilled? "/navigation": "#"} className="button is-rounded is-primary is-size-4">Find my Ride</Link>
             </div>
 
           </div>

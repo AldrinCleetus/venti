@@ -15,22 +15,12 @@ const Navigation = ({location,isLoaded}) => {
     const currentlocationRef = useRef('')
     const destinationRef = useRef('')
 
-    
-
- 
-
-
-   
-
-    const [initialDistance,setInitialDistance] = useState(false)
     const [directionResponse,setDirectionsResponse] = useState(null)
     const [distance,setDistance] = useState()
     const [duration,setDuration] = useState()
     const [cost,setCost] = useState()
 
-    // useEffect(()=>{
-    //     //console.log("new DirectionsResponse")
-    // },[directionResponse])
+
 
 
     // 0 -> selecting car type, 1-> Confirmation?
@@ -91,17 +81,10 @@ const Navigation = ({location,isLoaded}) => {
         })
 
         setDirectionsResponse(results)
-        // Take the first route 
         setDistance(results.routes[0].legs[0].distance.text)
         setDuration(results.routes[0].legs[0].duration.text)
-        
-
-        const costy = calculateCost(results.routes[0].legs[0].distance.text)
-        setCost(costy)
-
-        
-
-
+        const cabFare = calculateCost(results.routes[0].legs[0].distance.text)
+        setCost(cabFare)
 
     }
 
@@ -145,79 +128,27 @@ const Navigation = ({location,isLoaded}) => {
         })
 
         setCabsNearMe(newCabs)
+        nextProcess()
 
     }
     
 
     useEffect(()=>{
         if(isLoaded){
-            
             console.log("Calculating Initial Distance")
-            //getCoordinates()
-
-            calculateDistance(location.origin,location.destination)
-            
+            calculateDistance(location.origin,location.destination)    
         }
     },[])
     
 
-    const [loading,setLoading] = useState(false)
-
    
-
-    const [newCoords,setNewCoords] = useState(center) 
-   
-    useEffect(()=>{
-        //console.log(newCoords)
-        setCenter(newCoords)
-    },[newCoords])
 
     const locationChanged = async()=>{
         console.log('location changed')
         setProcessStage(0)
-        //getCoordinates()
         await calculateDistance(currentlocationRef.current.value ,destinationRef.current.value)
     }
 
-    const getCoordinates = async ()=>{
-
-        if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
-            //calculateDistance(location.origin,location.destination)
-            return
-        }
-
-        
-
-        const formattedAddress = location.origin.replace(/\s/g, '')
-        console.log("fetching ",formattedAddress)
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-            
-            setNewCoords({
-                    lat:5.4,
-                    lng:7.2
-                })
-
-                
-        }, 2000);
-
-        // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
-        // .then(res =>{
-        //     if(res.ok){
-        //         return res.json()
-        //     }
-        // })
-        // .then(data =>{
-        //     setLoading(false)
-        //     setNewCoords({
-        //         lat:data.results[0].geometry.location.lat,
-        //         lng:data.results[0].geometry.location.lng
-        //     })
-        // })
-    }
-
-   
 
     const setInitialValues = ()=>{
         currentlocationRef.current.value = location.origin
@@ -261,13 +192,48 @@ const Navigation = ({location,isLoaded}) => {
  
         let distanceValue = currentDistance.split(' ')[0]
 
-        // if(distance != undefined){
-            
-        // }
-
         const totalCost = Math.round((costPerKM * distanceValue) * dayTimeCostMultiplier * cabMultiplier   + intitalFare) 
         return (totalCost+" ₹")
     }
+
+
+    // const getCoordinates = async ()=>{
+
+    //     if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
+    //         //calculateDistance(location.origin,location.destination)
+    //         return
+    //     }
+
+        
+
+    //     const formattedAddress = location.origin.replace(/\s/g, '')
+    //     console.log("fetching ",formattedAddress)
+    //     setLoading(true)
+    //     // setTimeout(() => {
+    //     //     setLoading(false)
+            
+    //     //     setNewCoords({
+    //     //             lat:5.4,
+    //     //             lng:7.2
+    //     //         })
+
+                
+    //     // }, 2000);
+
+    //     // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
+    //     // .then(res =>{
+    //     //     if(res.ok){
+    //     //         return res.json()
+    //     //     }
+    //     // })
+    //     // .then(data =>{
+    //     //     setLoading(false)
+    //     //     setNewCoords({
+    //     //         lat:data.results[0].geometry.location.lat,
+    //     //         lng:data.results[0].geometry.location.lng
+    //     //     })
+    //     // })
+    // }
 
  
 
@@ -281,7 +247,6 @@ const Navigation = ({location,isLoaded}) => {
 
         <div className="my-auto  has-text-centered">
             {!isLoaded && <Loading></Loading>}
-            {loading && <Loading></Loading>}
             <div className="map-container rounded">
 
             
