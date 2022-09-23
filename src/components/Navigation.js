@@ -1,8 +1,8 @@
 import RideType from "./RideType";
 import Stats from "./Stats";
 
-import { GoogleMap,Marker, useJsApiLoader, Autocomplete, DirectionsRenderer } from '@react-google-maps/api';
-import { useEffect, useMemo, useRef, useState } from "react";
+import { GoogleMap,Marker, Autocomplete, DirectionsRenderer } from '@react-google-maps/api';
+import { useEffect, useRef, useState } from "react";
 import Loading from "./Loading";
 
 
@@ -17,25 +17,20 @@ const Navigation = ({location,isLoaded}) => {
 
     
 
-    useEffect(()=>{
-        if(isLoaded){
-            console.log(location.origin)
-            getCoordinates()
-        }
-    },[isLoaded])
+ 
 
 
    
 
-
+    const [initialDistance,setInitialDistance] = useState(false)
     const [directionResponse,setDirectionsResponse] = useState(null)
     const [distance,setDistance] = useState()
     const [duration,setDuration] = useState()
     const [cost,setCost] = useState()
 
-    useEffect(()=>{
-        console.log("Direction CHanged")
-    },[directionResponse])
+    // useEffect(()=>{
+    //     //console.log("new DirectionsResponse")
+    // },[directionResponse])
 
 
     // 0 -> selecting car type, 1-> Confirmation?
@@ -68,16 +63,20 @@ const Navigation = ({location,isLoaded}) => {
         setModal( modal? false : true)
     }
 
-    const calculateDistance = async()=>{
-        if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
+    const calculateDistance = async(origin,destination)=>{
+
+
+        console.log("calculating distance")
+        if(origin === "" || destination === ""){
+            console.log("returning")
             return
         }
 
         // eslint-disable-next-line no-undef
         const directionService = new google.maps.DirectionsService()
         const results = await directionService.route({
-            origin:currentlocationRef.current.value,
-            destination: destinationRef.current.value,
+            origin: origin , // currentlocationRef.current.value,
+            destination: destination, //destinationRef.current.value,
             // eslint-disable-next-line no-undef
             travelMode: google.maps.TravelMode.DRIVING,
             // waypoints: [
@@ -100,7 +99,7 @@ const Navigation = ({location,isLoaded}) => {
         const costy = calculateCost(results.routes[0].legs[0].distance.text)
         setCost(costy)
 
-        setProcessStage(processStage + 1 )
+        
 
 
 
@@ -116,8 +115,12 @@ const Navigation = ({location,isLoaded}) => {
 
 
     const nextProcess = ()=>{
-        setProcessStage( processStage + 1)
-        setModal(true)
+        if(directionResponse !== null){
+            setProcessStage( processStage + 1)
+        }
+        if(processStage === 1){
+            setModal(true)
+        }
     }
 
     const cancelBooking = ()=>{
@@ -144,7 +147,18 @@ const Navigation = ({location,isLoaded}) => {
         setCabsNearMe(newCabs)
 
     }
+    
 
+    useEffect(()=>{
+        if(isLoaded){
+            
+            console.log("Calculating Initial Distance")
+            //getCoordinates()
+
+            calculateDistance(location.origin,location.destination)
+            
+        }
+    },[])
     
 
     const [loading,setLoading] = useState(false)
@@ -158,44 +172,49 @@ const Navigation = ({location,isLoaded}) => {
         setCenter(newCoords)
     },[newCoords])
 
-    const locationChanged = ()=>{
+    const locationChanged = async()=>{
+        console.log('location changed')
         setProcessStage(0)
-        getCoordinates()
+        //getCoordinates()
+        await calculateDistance(currentlocationRef.current.value ,destinationRef.current.value)
     }
 
     const getCoordinates = async ()=>{
 
         if(currentlocationRef.current.value === "" || destinationRef.current.value === ""){
+            //calculateDistance(location.origin,location.destination)
             return
         }
+
+        
 
         const formattedAddress = location.origin.replace(/\s/g, '')
         console.log("fetching ",formattedAddress)
         setLoading(true)
-        // setTimeout(() => {
-        //     setLoading(false)
+        setTimeout(() => {
+            setLoading(false)
             
-        //     setNewCoords({
-        //             lat:5.4,
-        //             lng:7.2
-        //         })
+            setNewCoords({
+                    lat:5.4,
+                    lng:7.2
+                })
 
                 
-        // }, 2000);
+        }, 2000);
 
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
-        .then(res =>{
-            if(res.ok){
-                return res.json()
-            }
-        })
-        .then(data =>{
-            setLoading(false)
-            setNewCoords({
-                lat:data.results[0].geometry.location.lat,
-                lng:data.results[0].geometry.location.lng
-            })
-        })
+        // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}`)
+        // .then(res =>{
+        //     if(res.ok){
+        //         return res.json()
+        //     }
+        // })
+        // .then(data =>{
+        //     setLoading(false)
+        //     setNewCoords({
+        //         lat:data.results[0].geometry.location.lat,
+        //         lng:data.results[0].geometry.location.lng
+        //     })
+        // })
     }
 
    
@@ -285,16 +304,16 @@ const Navigation = ({location,isLoaded}) => {
 
                 <div className="search-bars columns ">
                     <div className="column ">
-                        <div class="field mt-5">
-                                <div class="control has-icons-left">
+                        <div className="field mt-5">
+                                <div className="control has-icons-left">
                                     <Autocomplete
                                     onLoad={setInitialValues}
                                     onPlaceChanged={locationChanged}
                                     >
-                                        <input class=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}
+                                        <input className=" input placeholder-color-white has-background-black has-text-white is-rounded is-large " type="email" placeholder="From" ref={currentlocationRef}
                                         />
                                     </Autocomplete>
-                                    <span class="icon is-medium is-left mt-2 ml-2">
+                                    <span className="icon is-medium is-left mt-2 ml-2">
                                         <img src="images/button1.svg" alt=""/>
                                     </span>
 
@@ -302,13 +321,13 @@ const Navigation = ({location,isLoaded}) => {
                         </div>
                     </div>
                     <div className="column ">
-                    <div class="field mt-5">
-                            <div class="control has-icons-left">
+                    <div className="field mt-5">
+                            <div className="control has-icons-left">
                             <Autocomplete
                             onPlaceChanged={locationChanged}>
-                            <input class="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="email" placeholder="To" ref={destinationRef}/>
+                            <input className="input is-rounded is-large placeholder-color-white has-background-black has-text-white" type="email" placeholder="To" ref={destinationRef}/>
                             </Autocomplete>
-                            <span class="icon is-medium mt-2 ml-2 is-left">
+                            <span className="icon is-medium mt-2 ml-2 is-left">
                             <img src="images/button2.svg" alt="" />
                             </span>
                         </div>
@@ -347,16 +366,16 @@ const Navigation = ({location,isLoaded}) => {
                 <div className="columns buttons">
                     {processStage === 0 && 
                     <div className="column">
-                        <button class="button is-rounded is-primary is-size-4" onClick={ calculateDistance}>Book</button>
+                        <button className="button is-rounded is-primary is-size-4" onClick={ nextProcess}>Book</button>
                     </div>
                     }
                     {processStage === 1 && 
                     <div className="column">
-                        <button class="button is-rounded is-primary is-size-4" onClick={nextProcess}>Confirm </button>
+                        <button className="button is-rounded is-primary is-size-4" onClick={nextProcess}>Confirm </button>
                     </div>
                     }
                    {processStage > 0 && <div className="column">
-                        <button class="button is-rounded is-primary is-size-4" onClick={cancelBooking}>Cancel </button>
+                        <button className="button is-rounded is-primary is-size-4" onClick={cancelBooking}>Cancel </button>
                     </div>}
                     
                     
@@ -374,12 +393,12 @@ const Navigation = ({location,isLoaded}) => {
 
             </div>
 
-            <div class={`modal ${modal? "is-active": ""}`}>
-            <div class="modal-background"></div>
-            <div class="modal-content">
+            <div className={`modal ${modal? "is-active": ""}`}>
+            <div className="modal-background"></div>
+            <div className="modal-content">
                 <button className="button is-large is-rounded is-primary" onClick={toggleModal}>Thank you for using Venti to Book your cab!</button>
             </div>
-            <button class="modal-close is-large" aria-label="close" onClick={toggleModal}></button>
+            <button className="modal-close is-large" aria-label="close" onClick={toggleModal}></button>
             </div>
         </div>
      );
