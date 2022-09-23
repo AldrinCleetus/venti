@@ -268,7 +268,9 @@ const Navigation = ({location,isLoaded}) => {
                 options={{
                     mapTypeControl:false,
                     fullscreenControl:false,
-                    streetViewControl:false
+                    streetViewControl:false,
+                    gestureHandling: "greedy"
+
                 }}
                 >
             {directionResponse && 
