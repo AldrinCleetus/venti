@@ -15,7 +15,7 @@ const NavBar = () => {
                 <Link to='/'><img  src="images/logo.png" /></Link>
             </div>           
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end is-hidden-mobile">
             
             <div className="navbar-item fade-in-animation">
                 <a className="button is-black is-rounded CButton" href="#rides">Ride Types</a>

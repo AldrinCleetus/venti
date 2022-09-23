@@ -341,16 +341,16 @@ const Navigation = ({location,isLoaded}) => {
                 <div className="columns buttons">
                     {processStage === 0 && 
                     <div className="column">
-                        <button className="button is-rounded is-primary is-size-4 fade-up-animation" onClick={ nextProcess}>Book</button>
+                        <button className="button is-rounded is-primary is-size-4 fade-in-animation is-size-6-mobile" onClick={ nextProcess}>Book</button>
                     </div>
                     }
                     {processStage === 1 && 
                     <div className="column">
-                        <button className="button is-rounded is-primary is-size-4 fade-up-animation" onClick={nextProcess}>Confirm </button>
+                        <button className="button is-rounded is-primary is-size-4 fade-in-animation is-size-6-mobile" onClick={nextProcess}>Confirm </button>
                     </div>
                     }
                    {processStage > 0 && <div className="column">
-                        <button className="button  is-rounded is-primary is-size-4 fade-up-animation" onClick={cancelBooking}>Cancel </button>
+                        <button className="button  is-rounded is-primary is-size-4 fade-in-animation is-size-6-mobile" onClick={cancelBooking}>Cancel </button>
                     </div>}
                     
                     
@@ -371,7 +371,7 @@ const Navigation = ({location,isLoaded}) => {
             <div className={`modal ${modal? "is-active": ""}`}>
             <div className="modal-background"></div>
             <div className="modal-content">
-                <button className="button is-large is-rounded is-primary" onClick={toggleModal}>Thank you for using Venti to Book your cab!</button>
+                <button className="button is-large is-rounded is-primary is-size-6-mobile" onClick={toggleModal}>Thank you for using Venti to Book your cab!</button>
             </div>
             <button className="modal-close is-large" aria-label="close" onClick={toggleModal}></button>
             </div>
