@@ -201,7 +201,7 @@ const Navigation = ({location,isLoaded}) => {
  
         let distanceValue = currentDistance.split(' ')[0]
         
-        const totalCost = Math.round((costPerKM * distanceValue) * dayTimeCostMultiplier   + intitalFare) * cabMultiplier
+        const totalCost = Math.round(((costPerKM * distanceValue) * dayTimeCostMultiplier   + intitalFare)* cabMultiplier) 
         console.log('calcualting cost ',totalCost," - ",cabMultiplier)
         return (totalCost+" ₹")
     }
@@ -341,16 +341,16 @@ const Navigation = ({location,isLoaded}) => {
                 <div className="columns buttons">
                     {processStage === 0 && 
                     <div className="column">
-                        <button className="button is-rounded is-primary is-size-4" onClick={ nextProcess}>Book</button>
+                        <button className="button is-rounded is-primary is-size-4 fade-up-animation" onClick={ nextProcess}>Book</button>
                     </div>
                     }
                     {processStage === 1 && 
                     <div className="column">
-                        <button className="button is-rounded is-primary is-size-4" onClick={nextProcess}>Confirm </button>
+                        <button className="button is-rounded is-primary is-size-4 fade-up-animation" onClick={nextProcess}>Confirm </button>
                     </div>
                     }
                    {processStage > 0 && <div className="column">
-                        <button className="button is-rounded is-primary is-size-4" onClick={cancelBooking}>Cancel </button>
+                        <button className="button  is-rounded is-primary is-size-4 fade-up-animation" onClick={cancelBooking}>Cancel </button>
                     </div>}
                     
                     

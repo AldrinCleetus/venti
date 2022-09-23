@@ -70,11 +70,18 @@ code {
   left: 1rem;
 }
 
+
 .ride-type-container{
+  transform: translateY(0);
+  transition: 1.5s all ease;
   width: 8rem;
   height: 5rem;
   box-shadow: 5px 5px 10px grey;
   background-color: black;
+}
+
+.ride-type-container.hidden{
+  transform: translateY(150px);
 }
 
 .ride-type-name{
@@ -281,6 +288,9 @@ code {
 
 /* fade in animation */
 
+.fade-up-animation{
+  animation: slideUp 2s;
+}
 
 .fade-in-animation{
   animation: fadeIn 2s;
@@ -313,6 +323,51 @@ code {
 @-ms-keyframes fadeIn {
   0% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(150px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
+}
+
+@-moz-keyframes slideUp {
+  0% {
+    transform: translateY(150px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
+}
+
+@-webkit-keyframes slideUp {
+  0% {
+    transform: translateY(150px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
+}
+
+@-o-keyframes slideUp {
+  0% {
+    transform: translateY(150px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
+}
+
+@-ms-keyframes slideUp {
+  0% {
+    transform: translateY(150px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
 }
 
 
