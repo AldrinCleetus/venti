@@ -91,7 +91,7 @@ const Navigation = ({location,isLoaded}) => {
     const clearRoute = ()=>{
         setDirectionsResponse(null)
         setDuration("")
-        setDistance("")
+        //setDistance("")
         currentlocationRef.current.value = ""
         destinationRef.current.value = ""
     }
@@ -128,7 +128,7 @@ const Navigation = ({location,isLoaded}) => {
         })
 
         setCabsNearMe(newCabs)
-        nextProcess()
+        //nextProcess()
 
     }
     
@@ -155,6 +155,13 @@ const Navigation = ({location,isLoaded}) => {
         destinationRef.current.value = location.destination
     }
 
+    useEffect(()=>{
+        if(distance){
+            const cabFare = calculateCost(distance)
+            setCost(cabFare)
+        }
+        
+    },[cabsNearMe])
     
     const calculateCost = (currentDistance)=>{
         const intitalFare = 20 // Booking Fee
@@ -166,33 +173,36 @@ const Navigation = ({location,isLoaded}) => {
             dayTimeCostMultiplier = 1.2
         }
 
+        let cabMultiplier = 1
+
         const cabType  = cabsNearMe.map((el,idx)=>{
             if(el.isSelected){
-                return el.cabType
+                switch (el.cabType) {
+                    case "economy":
+                        cabMultiplier = 1.2
+                        break;
+                    case "premium":
+                        cabMultiplier = 1.4
+                        break;
+                    case "luxury":
+                        cabMultiplier = 2
+                        break;
+                    default:
+                        cabMultiplier = 1
+                        break;
+                }
             }
         })
 
-        let cabMultiplier = 1
+        
 
-        switch (cabType) {
-            case "economy":
-                cabMultiplier = 1.2
-                break;
-            case "premium":
-                cabMultiplier = 1.6
-                break;
-            case "luxury":
-                cabMultiplier = 2
-                break;
-            default:
-                cabMultiplier = 1
-                break;
-        }
+        
 
  
         let distanceValue = currentDistance.split(' ')[0]
-
-        const totalCost = Math.round((costPerKM * distanceValue) * dayTimeCostMultiplier * cabMultiplier   + intitalFare) 
+        
+        const totalCost = Math.round((costPerKM * distanceValue) * dayTimeCostMultiplier   + intitalFare) * cabMultiplier
+        console.log('calcualting cost ',totalCost," - ",cabMultiplier)
         return (totalCost+" ₹")
     }
 
