@@ -289,7 +289,7 @@ code {
 /* fade in animation */
 
 .fade-up-animation{
-  animation: slideUp 2s;
+  animation: slideUp 1.2s;
 }
 
 .fade-in-animation{

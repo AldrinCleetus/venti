@@ -27,6 +27,15 @@ npm run start
 npm run test
 ```
 
+## Built With
+
+* [Google maps API](https://developers.google.com/maps/) - Places, Direction and Maps API
+* [Bulma](https://bulma.io/) - Bulma is a free, open source framework that provides ready-to-use frontend components that you can easily combine to build responsive web interfaces.
+
+## Project Screenshot(s)
+![screenshot](https://imgur.com/mlaTZsm)
+![screenshot](https://imgur.com/Q8YlOCu)
+
 ## Author
 
 👤 **Aldrin**
