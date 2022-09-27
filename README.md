@@ -33,8 +33,8 @@ npm run test
 * [Bulma](https://bulma.io/) - Bulma is a free, open source framework that provides ready-to-use frontend components that you can easily combine to build responsive web interfaces.
 
 ## Project Screenshot(s)
-![screenshot](https://imgur.com/mlaTZsm)
-![screenshot](https://imgur.com/Q8YlOCu)
+![screenshot](https://i.imgur.com/mlaTZsm.png)
+![screenshot](https://i.imgur.com/Q8YlOCu.png)
 
 ## Author
 
